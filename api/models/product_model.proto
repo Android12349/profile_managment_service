@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package profile_management.models.v1;
+option go_package = "github.com/Android12349/food_recomendation/profile_managment_service/internal/pb/models";
+
+message ProductModel {
+    int32 id = 1;
+    int32 user_id = 2;
+    string name = 3;
+    int32 calories = 4;
+    int32 protein = 5;
+    int32 fat = 6;
+    int32 carbs = 7;
+    string created_at = 8;
+}
+
+message ProductCreateModel {
+    int32 user_id = 1;
+    string name = 2;
+    int32 calories = 3;
+    int32 protein = 4;
+    int32 fat = 5;
+    int32 carbs = 6;
+}
+
+message ProductUpdateModel {
+    string name = 1;
+    int32 calories = 2;
+    int32 protein = 3;
+    int32 fat = 4;
+    int32 carbs = 5;
+}
+

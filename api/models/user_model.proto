@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package profile_management.models.v1;
+option go_package = "github.com/Android12349/food_recomendation/profile_managment_service/internal/pb/models";
+
+message UserModel {
+    int32 id = 1;
+    string username = 2;
+    string password_hash = 3;
+    int32 height = 4;
+    int32 weight = 5;
+    BJUModel bju = 6;
+    int32 budget = 7;
+    string preferences = 8; // JSON string
+    string created_at = 9;
+}
+
+message BJUModel {
+    int32 protein = 1;
+    int32 fat = 2;
+    int32 carbs = 3;
+}
+
+message UserCreateModel {
+    string username = 1;
+    string password = 2;
+    int32 height = 3;
+    int32 weight = 4;
+    BJUModel bju = 5;
+    int32 budget = 6;
+    string preferences = 7; // JSON string
+}
+
+message UserUpdateModel {
+    string username = 1;
+    int32 height = 2;
+    int32 weight = 3;
+    BJUModel bju = 4;
+    int32 budget = 5;
+    string preferences = 6; // JSON string
+}
+

@@ -1,0 +1,190 @@
+syntax = "proto3";
+package profile_management.service.v1;
+option go_package = "github.com/Android12349/food_recomendation/profile_managment_service/internal/pb/profile_management_api";
+import "models/user_model.proto";
+import "models/product_model.proto";
+import "models/meal_model.proto";
+import "google/api/annotations.proto";
+
+service ProfileManagementService {
+    // Users CRUD
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/users"
+            body: "*"
+        };
+    }
+
+    rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+        option (google.api.http) = {
+            get: "/users/{id}"
+        };
+    }
+
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
+        option (google.api.http) = {
+            patch: "/users/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
+        option (google.api.http) = {
+            delete: "/users/{id}"
+        };
+    }
+
+    // Products CRUD
+    rpc CreateProduct (CreateProductRequest) returns (CreateProductResponse) {
+        option (google.api.http) = {
+            post: "/products"
+            body: "*"
+        };
+    }
+
+    rpc GetProducts (GetProductsRequest) returns (GetProductsResponse) {
+        option (google.api.http) = {
+            get: "/products"
+        };
+    }
+
+    rpc UpdateProduct (UpdateProductRequest) returns (UpdateProductResponse) {
+        option (google.api.http) = {
+            patch: "/products/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse) {
+        option (google.api.http) = {
+            delete: "/products/{id}"
+        };
+    }
+
+    // Meals CRUD
+    rpc CreateMeal (CreateMealRequest) returns (CreateMealResponse) {
+        option (google.api.http) = {
+            post: "/meals"
+            body: "*"
+        };
+    }
+
+    rpc GetMeals (GetMealsRequest) returns (GetMealsResponse) {
+        option (google.api.http) = {
+            get: "/meals"
+        };
+    }
+
+    rpc UpdateMeal (UpdateMealRequest) returns (UpdateMealResponse) {
+        option (google.api.http) = {
+            patch: "/meals/{id}"
+            body: "*"
+        };
+    }
+
+    rpc DeleteMeal (DeleteMealRequest) returns (DeleteMealResponse) {
+        option (google.api.http) = {
+            delete: "/meals/{id}"
+        };
+    }
+}
+
+// User messages
+message CreateUserRequest {
+    profile_management.models.v1.UserCreateModel user = 1;
+}
+
+message CreateUserResponse {
+    profile_management.models.v1.UserModel user = 1;
+}
+
+message GetUserRequest {
+    int32 id = 1;
+}
+
+message GetUserResponse {
+    profile_management.models.v1.UserModel user = 1;
+}
+
+message UpdateUserRequest {
+    int32 id = 1;
+    profile_management.models.v1.UserUpdateModel user = 2;
+}
+
+message UpdateUserResponse {
+    profile_management.models.v1.UserModel user = 1;
+}
+
+message DeleteUserRequest {
+    int32 id = 1;
+}
+
+message DeleteUserResponse {
+}
+
+// Product messages
+message CreateProductRequest {
+    profile_management.models.v1.ProductCreateModel product = 1;
+}
+
+message CreateProductResponse {
+    profile_management.models.v1.ProductModel product = 1;
+}
+
+message GetProductsRequest {
+    int32 user_id = 1;
+}
+
+message GetProductsResponse {
+    repeated profile_management.models.v1.ProductModel products = 1;
+}
+
+message UpdateProductRequest {
+    int32 id = 1;
+    profile_management.models.v1.ProductUpdateModel product = 2;
+}
+
+message UpdateProductResponse {
+    profile_management.models.v1.ProductModel product = 1;
+}
+
+message DeleteProductRequest {
+    int32 id = 1;
+}
+
+message DeleteProductResponse {
+}
+
+// Meal messages
+message CreateMealRequest {
+    profile_management.models.v1.MealCreateModel meal = 1;
+}
+
+message CreateMealResponse {
+    profile_management.models.v1.MealModel meal = 1;
+}
+
+message GetMealsRequest {
+    int32 user_id = 1;
+}
+
+message GetMealsResponse {
+    repeated profile_management.models.v1.MealModel meals = 1;
+}
+
+message UpdateMealRequest {
+    int32 id = 1;
+    profile_management.models.v1.MealUpdateModel meal = 2;
+}
+
+message UpdateMealResponse {
+    profile_management.models.v1.MealModel meal = 1;
+}
+
+message DeleteMealRequest {
+    int32 id = 1;
+}
+
+message DeleteMealResponse {
+}
+

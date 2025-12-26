@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package profile_management.models.v1;
+option go_package = "github.com/Android12349/food_recomendation/profile_managment_service/internal/pb/models";
+
+message MealModel {
+    int32 id = 1;
+    int32 user_id = 2;
+    string name = 3;
+    repeated int32 product_ids = 4;
+    string created_at = 5;
+}
+
+message MealCreateModel {
+    int32 user_id = 1;
+    string name = 2;
+    repeated int32 product_ids = 3;
+}
+
+message MealUpdateModel {
+    string name = 1;
+    repeated int32 product_ids = 2;
+}
+

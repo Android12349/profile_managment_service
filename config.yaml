@@ -1,0 +1,30 @@
+database:
+  bucket_count: 16
+  shards:
+    - host: "localhost"
+      port: 5432
+      username: "postgres"
+      password: "postgres"
+      name: "postgres"
+      ssl_mode: "disable"
+    - host: "localhost"
+      port: 5433
+      username: "postgres"
+      password: "postgres"
+      name: "postgres"
+      ssl_mode: "disable"
+
+kafka:
+  host: "localhost"
+  port: 19092
+  menu_generation_topic_name: "menu-generation-requests"
+
+server:
+  grpc_port: 50051
+  http_port: 8080
+
+profileServiceSettings:
+  minUsernameLen: 3
+  maxUsernameLen: 50
+  minPasswordLen: 6
+
