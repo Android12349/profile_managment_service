@@ -8,7 +8,6 @@ import (
 )
 
 func (s *ProfileService) CreateProduct(ctx context.Context, product *models.Product) error {
-	// Проверяем существование пользователя
 	_, err := s.profileStorage.GetUserByID(ctx, product.UserID)
 	if err != nil {
 		return errors.New("пользователь не найден")
@@ -29,13 +28,11 @@ func (s *ProfileService) GetProductByID(ctx context.Context, id int32) (*models.
 }
 
 func (s *ProfileService) UpdateProduct(ctx context.Context, product *models.Product) error {
-	// Проверяем существование продукта
 	_, err := s.profileStorage.GetProductByID(ctx, product.ID)
 	if err != nil {
 		return errors.New("продукт не найден")
 	}
 
-	// Проверяем существование пользователя
 	_, err = s.profileStorage.GetUserByID(ctx, product.UserID)
 	if err != nil {
 		return errors.New("пользователь не найден")

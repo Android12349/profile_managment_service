@@ -109,7 +109,6 @@ func (s *ProfileManagementStorage) GetProductByID(ctx context.Context, id int32)
 		return nil, errors.Wrap(err, "generate query error")
 	}
 
-	// Ищем продукт по всем шардам, т.к. не знаем userID
 	var product models.Product
 	var calories, protein, fat, carbs sql.NullInt32
 	var createdAt sql.NullTime
@@ -169,7 +168,6 @@ func (s *ProfileManagementStorage) UpdateProduct(ctx context.Context, product *m
 		return errors.Wrap(err, "generate query error")
 	}
 
-	// Для UpdateProduct нужно сначала получить продукт, чтобы узнать userID
 	tempProduct, err := s.GetProductByID(ctx, product.ID)
 	if err != nil {
 		return err
@@ -193,7 +191,6 @@ func (s *ProfileManagementStorage) DeleteProduct(ctx context.Context, id int32) 
 		return errors.Wrap(err, "generate query error")
 	}
 
-	// Для DeleteProduct нужно сначала получить продукт, чтобы узнать userID
 	tempProduct, err := s.GetProductByID(ctx, id)
 	if err != nil {
 		return err

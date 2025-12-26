@@ -79,7 +79,6 @@ func (s *ProfileManagementStorage) GetUserByID(ctx context.Context, id int32) (*
 		return nil, errors.Wrap(err, "scan row error")
 	}
 
-	// Если не найден на правильном шарде, ищем по всем шардам
 	if !found {
 		for _, shard := range s.shards {
 			err = shard.QueryRow(ctx, queryText, args...).Scan(
@@ -152,14 +151,12 @@ func (s *ProfileManagementStorage) UpdateUser(ctx context.Context, user *models.
 		return errors.Wrap(err, "generate query error")
 	}
 
-	// Пытаемся обновить на правильном шарде
 	shard := s.getShard(user.ID)
 	result, err := shard.Exec(ctx, queryText, args...)
 	if err != nil {
 		return errors.Wrap(err, "exec query error")
 	}
 
-	// Если не обновлено, ищем по всем шардам
 	rowsAffected := result.RowsAffected()
 	if rowsAffected == 0 {
 		for _, shard := range s.shards {
@@ -193,7 +190,6 @@ func (s *ProfileManagementStorage) DeleteUser(ctx context.Context, id int32) err
 		return errors.Wrap(err, "exec query error")
 	}
 
-	// Если не удалено, ищем по всем шардам
 	rowsAffected := result.RowsAffected()
 	if rowsAffected == 0 {
 		// Пропускаем первый шард, так как он уже проверен

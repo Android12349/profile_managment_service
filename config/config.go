@@ -16,7 +16,7 @@ type Config struct {
 
 type DatabaseConfig struct {
 	Shards      []DatabaseShardConfig `yaml:"shards"`
-	BucketCount int                    `yaml:"bucket_count"` // Количество бакетов для шардирования
+	BucketCount int                   `yaml:"bucket_count"`
 }
 
 type DatabaseShardConfig struct {

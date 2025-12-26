@@ -17,14 +17,11 @@ func (s *ProfileService) CreateUser(ctx context.Context, user *models.User) erro
 		return err
 	}
 
-	// Публикуем событие в Kafka, если есть параметры для генерации меню
 	if s.shouldPublishMenuGenerationEvent(user) {
-		// Получаем продукты пользователя для передачи в событие
 		products, err := s.profileStorage.GetProductsByUserID(ctx, user.ID)
 		if err != nil {
 			// Логируем ошибку, но продолжаем публикацию без продуктов
 		}
-		// Инициализируем как пустой slice, а не nil
 		productNames := make([]string, 0)
 		if products != nil {
 			productNames = make([]string, 0, len(products))
@@ -32,10 +29,9 @@ func (s *ProfileService) CreateUser(ctx context.Context, user *models.User) erro
 				productNames = append(productNames, product.Name)
 			}
 		}
-		
+
 		if err := s.menuGenerationProducer.PublishMenuGenerationRequest(ctx, user.ID, user.BJU, user.Budget, user.Preferences, productNames); err != nil {
 			// Логируем ошибку, но не возвращаем её, т.к. пользователь уже создан
-			// В production можно использовать structured logging
 		}
 	}
 
@@ -47,7 +43,6 @@ func (s *ProfileService) GetUserByID(ctx context.Context, id int32) (*models.Use
 }
 
 func (s *ProfileService) UpdateUser(ctx context.Context, user *models.User) error {
-	// Проверяем существование пользователя
 	_, err := s.profileStorage.GetUserByID(ctx, user.ID)
 	if err != nil {
 		return errors.New("пользователь не найден")
@@ -62,14 +57,11 @@ func (s *ProfileService) UpdateUser(ctx context.Context, user *models.User) erro
 		return err
 	}
 
-	// Публикуем событие в Kafka, если есть параметры для генерации меню
 	if s.shouldPublishMenuGenerationEvent(user) {
-		// Получаем продукты пользователя для передачи в событие
 		products, err := s.profileStorage.GetProductsByUserID(ctx, user.ID)
 		if err != nil {
 			// Логируем ошибку, но продолжаем публикацию без продуктов
 		}
-		// Инициализируем как пустой slice, а не nil
 		productNames := make([]string, 0)
 		if products != nil {
 			productNames = make([]string, 0, len(products))
@@ -77,20 +69,17 @@ func (s *ProfileService) UpdateUser(ctx context.Context, user *models.User) erro
 				productNames = append(productNames, product.Name)
 			}
 		}
-		
+
 		if err := s.menuGenerationProducer.PublishMenuGenerationRequest(ctx, user.ID, user.BJU, user.Budget, user.Preferences, productNames); err != nil {
 			// Логируем ошибку, но не возвращаем её, т.к. пользователь уже обновлен
-			// В production можно использовать structured logging
 		}
 	}
 
 	return nil
 }
 
-// shouldPublishMenuGenerationEvent проверяет, нужно ли публиковать событие для генерации меню
 func (s *ProfileService) shouldPublishMenuGenerationEvent(user *models.User) bool {
-	// Публикуем событие, если есть хотя бы БЖУ или бюджет
-	return user.BJU != nil || user.Budget != nil
+	return user.BJU != nil || user.Budget != nil || user.Preferences != ""
 }
 
 func (s *ProfileService) DeleteUser(ctx context.Context, id int32) error {

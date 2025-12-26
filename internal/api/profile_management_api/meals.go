@@ -43,7 +43,6 @@ func (s *ProfileManagementAPI) GetMeals(ctx context.Context, req *profile_manage
 func (s *ProfileManagementAPI) UpdateMeal(ctx context.Context, req *profile_management_api.UpdateMealRequest) (*profile_management_api.UpdateMealResponse, error) {
 	log.Printf("Received UpdateMeal request for ID: %d", req.Id)
 
-	// Get existing meal to preserve user_id
 	existingMeal, err := s.profileService.GetMealByID(ctx, req.Id)
 	if err != nil {
 		return &profile_management_api.UpdateMealResponse{}, err
@@ -56,7 +55,6 @@ func (s *ProfileManagementAPI) UpdateMeal(ctx context.Context, req *profile_mana
 		return &profile_management_api.UpdateMealResponse{}, err
 	}
 
-	// Get updated meal
 	updatedMeal, err := s.profileService.GetMealByID(ctx, req.Id)
 	if err != nil {
 		return &profile_management_api.UpdateMealResponse{}, err

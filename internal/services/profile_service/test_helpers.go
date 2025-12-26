@@ -4,12 +4,10 @@ import (
 	"github.com/Android12349/food_recomendation/profile_managment_service/internal/models"
 )
 
-// int32Ptr создает указатель на int32
 func int32Ptr(v int32) *int32 {
 	return &v
 }
 
-// testUser создает тестового пользователя с заданными параметрами
 func testUser(id int32, username string) *models.User {
 	return &models.User{
 		ID:       id,
@@ -17,7 +15,6 @@ func testUser(id int32, username string) *models.User {
 	}
 }
 
-// testUserWithParams создает тестового пользователя с дополнительными параметрами
 func testUserWithParams(id int32, username string, height, weight, budget *int32, bju *models.BJU) *models.User {
 	user := testUser(id, username)
 	user.Height = height
@@ -27,7 +24,6 @@ func testUserWithParams(id int32, username string, height, weight, budget *int32
 	return user
 }
 
-// testBJU создает тестовый объект БЖУ
 func testBJU(protein, fat, carbs int32) *models.BJU {
 	return &models.BJU{
 		Protein: protein,
@@ -36,7 +32,6 @@ func testBJU(protein, fat, carbs int32) *models.BJU {
 	}
 }
 
-// testProduct создает тестовый продукт с заданными параметрами
 func testProduct(id, userID int32, name string) *models.Product {
 	return &models.Product{
 		ID:     id,
@@ -45,7 +40,6 @@ func testProduct(id, userID int32, name string) *models.Product {
 	}
 }
 
-// testProductWithParams создает тестовый продукт с дополнительными параметрами
 func testProductWithParams(id, userID int32, name string, calories, protein, fat, carbs *int32) *models.Product {
 	product := testProduct(id, userID, name)
 	product.Calories = calories
@@ -55,7 +49,6 @@ func testProductWithParams(id, userID int32, name string, calories, protein, fat
 	return product
 }
 
-// testMeal создает тестовое блюдо с заданными параметрами
 func testMeal(id, userID int32, name string, productIDs []int32) *models.Meal {
 	return &models.Meal{
 		ID:         id,

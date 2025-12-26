@@ -9,7 +9,6 @@ import (
 )
 
 func (s *ProfileService) CreateMeal(ctx context.Context, meal *models.Meal) error {
-	// Проверяем существование пользователя
 	_, err := s.profileStorage.GetUserByID(ctx, meal.UserID)
 	if err != nil {
 		return errors.New("пользователь не найден")
@@ -19,7 +18,6 @@ func (s *ProfileService) CreateMeal(ctx context.Context, meal *models.Meal) erro
 		return err
 	}
 
-	// Проверяем существование всех продуктов
 	for _, productID := range meal.ProductIDs {
 		_, err := s.profileStorage.GetProductByID(ctx, productID)
 		if err != nil {
@@ -39,13 +37,11 @@ func (s *ProfileService) GetMealByID(ctx context.Context, id int32) (*models.Mea
 }
 
 func (s *ProfileService) UpdateMeal(ctx context.Context, meal *models.Meal) error {
-	// Проверяем существование блюда
 	_, err := s.profileStorage.GetMealByID(ctx, meal.ID)
 	if err != nil {
 		return errors.New("блюдо не найдено")
 	}
 
-	// Проверяем существование пользователя
 	_, err = s.profileStorage.GetUserByID(ctx, meal.UserID)
 	if err != nil {
 		return errors.New("пользователь не найден")
@@ -55,7 +51,6 @@ func (s *ProfileService) UpdateMeal(ctx context.Context, meal *models.Meal) erro
 		return err
 	}
 
-	// Проверяем существование всех продуктов
 	for _, productID := range meal.ProductIDs {
 		_, err := s.profileStorage.GetProductByID(ctx, productID)
 		if err != nil {

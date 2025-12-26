@@ -20,20 +20,17 @@ func (p *MenuGenerationProducer) PublishMenuGenerationRequest(ctx context.Contex
 	}
 	defer writer.Close()
 
-	// Создаем событие
 	event := models.MenuGenerationRequestEvent{
 		RequestID: uuid.New().String(),
 		UserID:    userID,
 		Preferences: models.MenuGenerationPrefs{
 			BJU:      bju,
 			Budget:   budget,
-			Products: productNames, // Используем продукты из БД
+			Products: productNames,
 		},
 		Timestamp: time.Now().UTC().Format(time.RFC3339),
 	}
 
-	// Дополнительно парсим preferences (JSON строка) для извлечения продуктов, если они там есть
-	// Но приоритет у продуктов из БД
 	if len(productNames) == 0 && preferences != "" {
 		var prefsMap map[string]interface{}
 		if err := json.Unmarshal([]byte(preferences), &prefsMap); err == nil {
@@ -49,13 +46,11 @@ func (p *MenuGenerationProducer) PublishMenuGenerationRequest(ctx context.Contex
 		}
 	}
 
-	// Сериализуем событие в JSON
 	eventJSON, err := json.Marshal(event)
 	if err != nil {
 		return errors.Wrap(err, "failed to marshal menu generation event")
 	}
 
-	// Публикуем сообщение в Kafka
 	msg := kafka.Message{
 		Key:   []byte(fmt.Sprintf("user_%d", userID)),
 		Value: eventJSON,

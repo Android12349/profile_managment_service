@@ -15,7 +15,6 @@ func (s *ProfileManagementAPI) CreateUser(ctx context.Context, req *profile_mana
 
 	user := mapUserCreateModelToModel(req.User)
 
-	// Hash password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return &profile_management_api.CreateUserResponse{}, err
@@ -55,7 +54,6 @@ func (s *ProfileManagementAPI) UpdateUser(ctx context.Context, req *profile_mana
 		return &profile_management_api.UpdateUserResponse{}, err
 	}
 
-	// Get updated user
 	updatedUser, err := s.profileService.GetUserByID(ctx, req.Id)
 	if err != nil {
 		return &profile_management_api.UpdateUserResponse{}, err

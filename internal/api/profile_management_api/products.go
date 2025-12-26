@@ -43,7 +43,6 @@ func (s *ProfileManagementAPI) GetProducts(ctx context.Context, req *profile_man
 func (s *ProfileManagementAPI) UpdateProduct(ctx context.Context, req *profile_management_api.UpdateProductRequest) (*profile_management_api.UpdateProductResponse, error) {
 	log.Printf("Received UpdateProduct request for ID: %d", req.Id)
 
-	// Get existing product to preserve user_id
 	existingProduct, err := s.profileService.GetProductByID(ctx, req.Id)
 	if err != nil {
 		return &profile_management_api.UpdateProductResponse{}, err
@@ -56,7 +55,6 @@ func (s *ProfileManagementAPI) UpdateProduct(ctx context.Context, req *profile_m
 		return &profile_management_api.UpdateProductResponse{}, err
 	}
 
-	// Get updated product
 	updatedProduct, err := s.profileService.GetProductByID(ctx, req.Id)
 	if err != nil {
 		return &profile_management_api.UpdateProductResponse{}, err

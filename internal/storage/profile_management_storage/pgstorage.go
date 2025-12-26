@@ -12,7 +12,7 @@ import (
 type ProfileManagementStorage struct {
 	shards        []*pgxpool.Pool
 	bucketCount   int
-	bucketToShard []int // Маппинг бакет -> индекс шарда
+	bucketToShard []int
 }
 
 func NewProfileManagementStorage(connStrings []string, bucketCount int) (*ProfileManagementStorage, error) {
@@ -38,8 +38,6 @@ func NewProfileManagementStorage(connStrings []string, bucketCount int) (*Profil
 		shards = append(shards, db)
 	}
 
-	// Создаем маппинг бакет -> шард
-	// Распределяем бакеты равномерно по шардам
 	bucketToShard := make([]int, bucketCount)
 	for i := 0; i < bucketCount; i++ {
 		bucketToShard[i] = i % len(shards)
@@ -51,7 +49,6 @@ func NewProfileManagementStorage(connStrings []string, bucketCount int) (*Profil
 		bucketToShard: bucketToShard,
 	}
 
-	// Инициализируем таблицы на всех шардах
 	err := storage.initTables()
 	if err != nil {
 		return nil, err
@@ -74,7 +71,6 @@ func (s *ProfileManagementStorage) getBucket(userID int32) int {
 	return bucket
 }
 
-// getShard возвращает подключение к шарду на основе user_id через бакеты
 func (s *ProfileManagementStorage) getShard(userID int32) *pgxpool.Pool {
 	bucket := s.getBucket(userID)
 	shardIndex := s.bucketToShard[bucket]
@@ -121,7 +117,6 @@ func (s *ProfileManagementStorage) initTables() error {
 		)`, mealsTableName, mealsIDColumn, mealsUserIDColumn,
 		mealsNameColumn, mealsProductIDsColumn, mealsCreatedAtColumn)
 
-	// Инициализируем таблицы на всех шардах
 	for i, shard := range s.shards {
 		_, err := shard.Exec(context.Background(), usersSQL)
 		if err != nil {

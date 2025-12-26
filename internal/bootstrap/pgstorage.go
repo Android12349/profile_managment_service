@@ -18,7 +18,6 @@ func InitPGStorage(cfg *config.Config) *profile_management_storage.ProfileManage
 
 	bucketCount := cfg.Database.BucketCount
 	if bucketCount == 0 {
-		// Если не указано, используем количество шардов * 8 (стандартное значение)
 		bucketCount = len(cfg.Database.Shards) * 8
 		log.Printf("bucket_count не указан, используем значение по умолчанию: %d", bucketCount)
 	}
