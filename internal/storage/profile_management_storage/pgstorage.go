@@ -71,8 +71,28 @@ func (s *ProfileManagementStorage) getBucket(userID int32) int {
 	return bucket
 }
 
+// getBucketByUsername вычисляет номер бакета для username используя хеш-функцию
+func (s *ProfileManagementStorage) getBucketByUsername(username string) int {
+	// Используем FNV-1a хеш для равномерного распределения
+	hash := fnv.New32a()
+	hash.Write([]byte(username))
+	hashValue := hash.Sum32()
+
+	bucket := int(hashValue) % s.bucketCount
+	if bucket < 0 {
+		bucket = -bucket
+	}
+	return bucket
+}
+
 func (s *ProfileManagementStorage) getShard(userID int32) *pgxpool.Pool {
 	bucket := s.getBucket(userID)
+	shardIndex := s.bucketToShard[bucket]
+	return s.shards[shardIndex]
+}
+
+func (s *ProfileManagementStorage) getShardByUsername(username string) *pgxpool.Pool {
+	bucket := s.getBucketByUsername(username)
 	shardIndex := s.bucketToShard[bucket]
 	return s.shards[shardIndex]
 }

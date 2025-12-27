@@ -34,7 +34,7 @@ func (s *ProfileManagementStorage) CreateUser(ctx context.Context, user *models.
 		return errors.Wrap(err, "generate query error")
 	}
 
-	shard := s.shards[0]
+	shard := s.getShardByUsername(user.Username)
 	var createdAt sql.NullTime
 	err = shard.QueryRow(ctx, queryText, args...).Scan(&user.ID, &createdAt)
 	if err != nil {
